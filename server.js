@@ -29,8 +29,7 @@ app.use((req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`✔ Souqna backend يعمل على المنفذ ${PORT}`);
-});
-const db = require("./db");
+});const db = require("./db");
 
 const products = [
   { name: "سماعات بلوتوث لاسلكية", category: "elec", price: 4500, stock: 42, threshold: 10 },
@@ -61,7 +60,6 @@ function seedIfEmpty() {
   }
 }
 
-// إذا شُغّل هذا الملف مباشرة (node seed.js) — نفّذ التعبئة فورًا
 if (require.main === module) {
   seedIfEmpty();
 }
