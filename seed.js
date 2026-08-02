@@ -15,14 +15,22 @@ const products = [
   { name: "عربة أطفال قابلة للطي", category: "kids", price: 12500, stock: 4, threshold: 5 },
 ];
 
-const existing = db.prepare("SELECT COUNT(*) AS n FROM products").get().n;
-if (existing === 0) {
-  const insert = db.prepare(
-    "INSERT INTO products (name, category, price, stock, threshold) VALUES (@name, @category, @price, @stock, @threshold)"
-  );
-  const insertMany = db.transaction((rows) => rows.forEach((r) => insert.run(r)));
-  insertMany(products);
-  console.log(`تمت إضافة ${products.length} منتج بنجاح.`);
-} else {
-  console.log("قاعدة البيانات تحتوي منتجات بالفعل — لم تتم إعادة التعبئة.");
+function seedIfEmpty() {
+  const existing = db.prepare("SELECT COUNT(*) AS n FROM products").get().n;
+  if (existing === 0) {
+    const insert = db.prepare(
+      "INSERT INTO products (name, category, price, stock, threshold) VALUES (@name, @category, @price, @stock, @threshold)"
+    );
+    const insertMany = db.transaction((rows) => rows.forEach((r) => insert.run(r)));
+    insertMany(products);
+    console.log(`تمت إضافة ${products.length} منتج بنجاح.`);
+  } else {
+    console.log("قاعدة البيانات تحتوي منتجات بالفعل — لم تتم إعادة التعبئة.");
+  }
 }
+
+if (require.main === module) {
+  seedIfEmpty();
+}
+
+module.exports = { seedIfEmpty };
